@@ -143,7 +143,7 @@ public class PainelPrincipal extends javax.swing.JFrame {
 
     private void compareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareButtonActionPerformed
         BioProcess bio = new BioProcess();
-        bio.startBioProcess(original, imgs, 50, 10, 50,(original.getWidth()*original.getHeight())/2,0.9);
+        bio.startBioProcess(original, imgs, 400, 100, 100,(original.getWidth()*original.getHeight())/2,0.9);
     }//GEN-LAST:event_compareButtonActionPerformed
 
     /**

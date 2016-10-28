@@ -35,8 +35,9 @@ public class BioProcess {
             
             //computo o fitness do melhor indivíduo da população
             double fitness = BioOps.computeFitnessValue(baseChromo, BioOps.getBestIndividual(population));
+            System.out.println("fitness value: "+ fitness);
             while (fitness <= fitnessThreshold) {
-                System.out.println("fitness value: "+ fitness);
+                
                 for (int i=0;i<reproductionLevel;i++) {
                        Chromossome[] chromos = BioOps.performCrossover(population.get(rand.nextInt(populationSize-1)), population.get(rand.nextInt(populationSize-1)), width*height);
                         //ajusta o valor de fitness
@@ -52,6 +53,7 @@ public class BioProcess {
                 population = BioOps.performSelection(population, populationSize);
                 fitness = BioOps.computeFitnessValue(baseChromo, BioOps.getBestIndividual(population));
                 iterations++;
+                System.out.println("fitness value: "+ fitness);
             }
             
         }

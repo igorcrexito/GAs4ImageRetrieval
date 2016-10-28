@@ -13,13 +13,13 @@ package bio;
  */
 public class Chromossome {
     
-    private int[] genes;
+    private Genes genes;
     private int dimension;
     private double fitnessValue;
 
     public Chromossome(int dimension) {
         this.dimension = dimension;
-        this.genes = new int[dimension];
+        this.genes = new Genes(dimension);
     }
 
     public double getFitnessValue() {
@@ -30,11 +30,11 @@ public class Chromossome {
         this.fitnessValue = fitnessValue;
     }
 
-    public int[] getGenes() {
+    public Genes getGenes() {
         return genes;
     }
 
-    public void setGenes(int[] genes) {
+    public void setGenes(Genes genes) {
         this.genes = genes;
     }
 

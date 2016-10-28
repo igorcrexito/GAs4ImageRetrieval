@@ -28,8 +28,8 @@ public class BioOps {
      */
     public static Chromossome[] performCrossover(Chromossome indivA, Chromossome indivB, int cutoffPoint) {
 
-        int[] pixA = indivA.getGenes();
-        int[] pixB = indivB.getGenes();
+        int[] pixA = indivA.getGenes().getGeneticInformation();
+        int[] pixB = indivB.getGenes().getGeneticInformation();
         int dimension = indivA.getDimension();
 
         Chromossome sonA = new Chromossome(dimension);
@@ -37,13 +37,23 @@ public class BioOps {
 
         //isso representa a reprodução
         for (int i = 0; i < dimension; i++) {
-            if (i < cutoffPoint) {
-                sonA.getGenes()[i] = pixA[i];
-                sonB.getGenes()[i] = pixB[i];
-            } else {
-                sonB.getGenes()[i] = pixA[i];
-                sonA.getGenes()[i] = pixB[i];
-            }
+                //boost no crossover. Evita reproduções que afastem da solução
+                if (indivA.getGenes().getLockedGenes()[i]==1) {
+                    sonA.getGenes().getGeneticInformation()[i] = pixA[i];
+                    sonB.getGenes().getGeneticInformation()[i] = pixA[i];
+                } else if (indivB.getGenes().getLockedGenes()[i]==1) {
+                    sonA.getGenes().getGeneticInformation()[i] = pixB[i];
+                    sonB.getGenes().getGeneticInformation()[i] = pixB[i];
+                } else {  
+                    //faz a mescla de genes
+                    if (i < cutoffPoint) {
+                        sonA.getGenes().getGeneticInformation()[i] = pixA[i];
+                        sonB.getGenes().getGeneticInformation()[i] = pixB[i];
+                    } else {
+                        sonB.getGenes().getGeneticInformation()[i] = pixA[i];
+                        sonA.getGenes().getGeneticInformation()[i] = pixB[i];
+                    }
+                }
         }
 
         Chromossome[] output = new Chromossome[2];
@@ -65,7 +75,10 @@ public class BioOps {
         for (int i = 0; i < numberOfMutations; i++) {
             int position = rand.nextInt(dimension);
             int value = rand.nextInt(MAX_PIX_VALUE);
-            individual.getGenes()[position] = value;
+            
+            //só faz mutação se o gene for errado
+            if (individual.getGenes().getLockedGenes()[position]!=1)
+                individual.getGenes().getGeneticInformation()[position] = value;
         }
         return individual;
     }
@@ -105,7 +118,12 @@ public class BioOps {
         double fitness = 255*dimension;
         
         for (int i = 0; i < dimension; i++) {
-            fitness = fitness - (Math.abs(basis.getGenes()[i] - individual.getGenes()[i]));
+            int difference = (Math.abs(basis.getGenes().getGeneticInformation()[i] - individual.getGenes().getGeneticInformation()[i]));
+            fitness = fitness - difference;
+            
+            //se o valor já está correto, não precisa ser alterado. Isso é um boost
+            if (difference==0)
+                individual.getGenes().getLockedGenes()[i] = 1;
         }
         
         fitness = (double)fitness/((double)255*(double)dimension);
@@ -145,7 +163,6 @@ public class BioOps {
             fitness = computeFitnessValue(baseChromo, newChromo);
             newChromo.setFitnessValue(fitness);
             population.add(newChromo);
-            
         }
 
         return population;
@@ -165,7 +182,7 @@ public class BioOps {
         for (int i = 0; i < imagem.getWidth(); i++) {
             for (int j = 0; j < imagem.getHeight(); j++) {
                 iterator.getPixel(i, j, pixel);
-                imagessome.getGenes()[dimension] = pixel[0]; //imagens só em grayscale
+                imagessome.getGenes().getGeneticInformation()[dimension] = pixel[0]; //imagens só em grayscale
                 dimension++;
             }
         }
