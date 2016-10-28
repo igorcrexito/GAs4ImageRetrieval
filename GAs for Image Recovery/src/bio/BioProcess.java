@@ -7,6 +7,7 @@ package bio;
 
 import java.awt.image.Raster;
 import java.util.ArrayList;
+import java.util.Random;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
@@ -17,39 +18,46 @@ import utils.BioOps;
  * @author Igor Pig
  */
 public class BioProcess {
-    
-    public void startBioProcess(PlanarImage baseImage, ArrayList<PlanarImage> imgs, int populationSize, int mutationLevel, int crossoverCut) {
-        
-        Chromossome baseChromo = convertImage2Chromossome(baseImage);
-        ArrayList<Chromossome> population = new ArrayList<>();
+
+    public void startBioProcess(PlanarImage baseImage, ArrayList<PlanarImage> imgs, int populationSize, int mutationLevel, int reproductionLevel, int crossoverCut , double fitnessThreshold) {
+
+        Chromossome baseChromo = BioOps.convertImage2Chromossome(baseImage);
+        ArrayList<Chromossome> population;
         int width = baseImage.getWidth();
-        int heith = baseImage.getHeight();
-        
-        //Parei aqui --> isso ainda não tá certo !
-        for (int i=0;i<populationSize;i++) {
-            population.add(new Chromossome(width*heith));
-            population.set(i, convertImage2Chromossome(imgs.get(i)));
-            BioOps.computeFitnessValue(baseChromo, population.get(i));
-        }
-        
-    }
-    
-    private Chromossome convertImage2Chromossome(PlanarImage imagem) {
-        int width = imagem.getWidth();
-        int height = imagem.getHeight();
-        
-        Chromossome imagessome = new Chromossome(width*height);
-        
-        RandomIter iterator = RandomIterFactory.create(imagem, null);
-        int[] pixel = new int[1];
-        
-        for (int i=0;i<imagem.getWidth();i++) {
-            for (int j=0;j<imagem.getHeight();j++) {
-                iterator.getPixel(i, j, pixel);
-                imagessome.getGenes()[i*width+j] = pixel[0]; //imagens ó em grayscale
+        int height = baseImage.getHeight();
+ 
+        int iterations = 0;
+        Random rand = new Random();
+        //para cada imagem da galeria
+        for (int z = 0; z < imgs.size(); z++) {
+            //inicializo uma população de tamanho 50
+            population = BioOps.startPopulation(baseChromo, imgs.get(z), populationSize);
+            
+            //computo o fitness do melhor indivíduo da população
+            double fitness = BioOps.computeFitnessValue(baseChromo, BioOps.getBestIndividual(population));
+            while (fitness <= fitnessThreshold) {
+                System.out.println("fitness value: "+ fitness);
+                for (int i=0;i<reproductionLevel;i++) {
+                       Chromossome[] chromos = BioOps.performCrossover(population.get(rand.nextInt(populationSize-1)), population.get(rand.nextInt(populationSize-1)), width*height);
+                        //ajusta o valor de fitness
+                        for (int c=0;c<chromos.length;c++) {
+                            chromos[c].setFitnessValue(BioOps.computeFitnessValue(baseChromo, chromos[c]));
+                            population.add(chromos[c]);
+                        }  
+                }
+                //faz a mutação nos indivíduos
+                for (int i=0;i<populationSize;i++)
+                    population.set(i, BioOps.performMutation(population.get(i), i));
+                
+                population = BioOps.performSelection(population, populationSize);
+                fitness = BioOps.computeFitnessValue(baseChromo, BioOps.getBestIndividual(population));
+                iterations++;
             }
+            
         }
-   
-        return imagessome;
+        
+        System.out.println("número de iterações é: "+iterations);
+
     }
+
 }
