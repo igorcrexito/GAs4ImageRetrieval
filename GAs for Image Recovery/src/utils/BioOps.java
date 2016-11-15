@@ -130,17 +130,36 @@ public class BioOps {
         
         return fitness;  //normalizar entre 0 e 1 -> depois posso mudar isso
     }
+    
+    public static double computeFitnessValueSSD(Chromossome basis, Chromossome individual) {
+        
+        int dimension = individual.getDimension();
+        double fitnessValue = 255*dimension;
+        
+        for (int i=0;i<basis.getDimension();i++) {
+            int diff = (individual.getGenes().getGeneticInformation()[i]-basis.getGenes().getGeneticInformation()[i]);
+            int difference = diff*diff;
+            fitnessValue = fitnessValue - difference;
+        
+            //se o valor já está correto, não precisa ser alterado. Isso é um boost
+            if (difference==0)
+                individual.getGenes().getLockedGenes()[i] = 1;
+        }
+        
+        fitnessValue = (double)fitnessValue/((double)255*(double)dimension);
+        
+        return fitnessValue;
+    }
 
+    
     public static Chromossome getBestIndividual(ArrayList<Chromossome> population) {
-
         Chromossome selectedChromo = population.get(0);
         double bestFitness = population.get(0).getFitnessValue();
         for (int i = 1; i < population.size(); i++) {
             if (bestFitness < population.get(i).getFitnessValue()) {
                 selectedChromo = population.get(i);
             }
-        }
-        
+        }      
         return selectedChromo;
     }
 
@@ -171,7 +190,6 @@ public class BioOps {
     public static Chromossome convertImage2Chromossome(PlanarImage imagem) {
         int width = imagem.getWidth();
         int height = imagem.getHeight();
-        
         
         Chromossome imagessome = new Chromossome(width * height);
         

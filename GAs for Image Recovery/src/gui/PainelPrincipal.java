@@ -6,11 +6,15 @@
 package gui;
 
 import bio.BioProcess;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageFilter;
 import java.io.File;
 import java.util.ArrayList;
+import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.ScaleDescriptor;
 import javax.swing.JFileChooser;
 import processing.ProcessImage;
 
@@ -20,20 +24,54 @@ import processing.ProcessImage;
  */
 public class PainelPrincipal extends javax.swing.JFrame {
 
-    
+    //MainPanel
     DisplayPrincipal principal;
+
+    //ThumbPanels
+    DisplayPrincipal panelThumb1;
+    DisplayPrincipal panelThumb2;
+    DisplayPrincipal panelThumb3;
+    DisplayPrincipal panelThumb4;
+    DisplayPrincipal panelThumb5;
+    DisplayPrincipal panelThumb6;
+    DisplayPrincipal panelThumb7;
+    DisplayPrincipal panelThumb8;
+
     PlanarImage original;
     ArrayList<PlanarImage> imgs = new ArrayList<>();
+    ArrayList<PlanarImage> thumbs = new ArrayList<>();
+    ArrayList<PlanarImage> imagens;
+    
     /**
      * Creates new form PainelPrincipal
      */
     public PainelPrincipal() {
         super("GAs 4 Image Retrieval");
         initComponents();
-        
+
         principal = new DisplayPrincipal();
         painelDeImagem.add(principal);
         painelDeImagem.repaint();
+
+        //inicializando thumbs
+        panelThumb1 = new DisplayPrincipal();
+        panelThumb2 = new DisplayPrincipal();
+        panelThumb3 = new DisplayPrincipal();
+        panelThumb4 = new DisplayPrincipal();
+        panelThumb5 = new DisplayPrincipal();
+        panelThumb6 = new DisplayPrincipal();
+        panelThumb7 = new DisplayPrincipal();
+        panelThumb8 = new DisplayPrincipal();
+
+        thumbPanel1.add(panelThumb1);
+        thumbPanel2.add(panelThumb2);
+        thumbPanel3.add(panelThumb3);
+        thumbPanel4.add(panelThumb4);
+        thumbPanel5.add(panelThumb5);
+        thumbPanel6.add(panelThumb6);
+        thumbPanel7.add(panelThumb7);
+        thumbPanel8.add(panelThumb8);
+
     }
 
     /**
@@ -50,6 +88,14 @@ public class PainelPrincipal extends javax.swing.JFrame {
         addButton = new javax.swing.JButton();
         compareButton = new javax.swing.JButton();
         painelDeImagem = new javax.swing.JPanel();
+        thumbPanel1 = new javax.swing.JPanel();
+        thumbPanel2 = new javax.swing.JPanel();
+        thumbPanel3 = new javax.swing.JPanel();
+        thumbPanel4 = new javax.swing.JPanel();
+        thumbPanel5 = new javax.swing.JPanel();
+        thumbPanel6 = new javax.swing.JPanel();
+        thumbPanel7 = new javax.swing.JPanel();
+        thumbPanel8 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,11 +142,115 @@ public class PainelPrincipal extends javax.swing.JFrame {
         painelDeImagem.setLayout(painelDeImagemLayout);
         painelDeImagemLayout.setHorizontalGroup(
             painelDeImagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
         painelDeImagemLayout.setVerticalGroup(
             painelDeImagemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 301, Short.MAX_VALUE)
+        );
+
+        thumbPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel1Layout = new javax.swing.GroupLayout(thumbPanel1);
+        thumbPanel1.setLayout(thumbPanel1Layout);
+        thumbPanel1Layout.setHorizontalGroup(
+            thumbPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel1Layout.setVerticalGroup(
+            thumbPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel2Layout = new javax.swing.GroupLayout(thumbPanel2);
+        thumbPanel2.setLayout(thumbPanel2Layout);
+        thumbPanel2Layout.setHorizontalGroup(
+            thumbPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel2Layout.setVerticalGroup(
+            thumbPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel3Layout = new javax.swing.GroupLayout(thumbPanel3);
+        thumbPanel3.setLayout(thumbPanel3Layout);
+        thumbPanel3Layout.setHorizontalGroup(
+            thumbPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel3Layout.setVerticalGroup(
+            thumbPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel4Layout = new javax.swing.GroupLayout(thumbPanel4);
+        thumbPanel4.setLayout(thumbPanel4Layout);
+        thumbPanel4Layout.setHorizontalGroup(
+            thumbPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel4Layout.setVerticalGroup(
+            thumbPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel5Layout = new javax.swing.GroupLayout(thumbPanel5);
+        thumbPanel5.setLayout(thumbPanel5Layout);
+        thumbPanel5Layout.setHorizontalGroup(
+            thumbPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel5Layout.setVerticalGroup(
+            thumbPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel6Layout = new javax.swing.GroupLayout(thumbPanel6);
+        thumbPanel6.setLayout(thumbPanel6Layout);
+        thumbPanel6Layout.setHorizontalGroup(
+            thumbPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel6Layout.setVerticalGroup(
+            thumbPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel7Layout = new javax.swing.GroupLayout(thumbPanel7);
+        thumbPanel7.setLayout(thumbPanel7Layout);
+        thumbPanel7Layout.setHorizontalGroup(
+            thumbPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel7Layout.setVerticalGroup(
+            thumbPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        thumbPanel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
+
+        javax.swing.GroupLayout thumbPanel8Layout = new javax.swing.GroupLayout(thumbPanel8);
+        thumbPanel8.setLayout(thumbPanel8Layout);
+        thumbPanel8Layout.setHorizontalGroup(
+            thumbPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        thumbPanel8Layout.setVerticalGroup(
+            thumbPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -108,14 +258,50 @@ public class PainelPrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(painelDeImagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(thumbPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(thumbPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(thumbPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(thumbPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(thumbPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(thumbPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(thumbPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(thumbPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-            .addComponent(painelDeImagem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(painelDeImagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(thumbPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(thumbPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(thumbPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(thumbPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(thumbPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(thumbPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(thumbPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(thumbPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -124,26 +310,38 @@ public class PainelPrincipal extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(this);
-        
+
         String path = chooser.getSelectedFile().getAbsolutePath();
+        PlanarImage image = JAI.create("fileload", path);
+        PlanarImage thumb  = PlanarImage.wrapRenderedImage(iconify(image, 100, 100));
+        thumbs.add(thumb);
+
+        image = ProcessImage.convertImageToGrayScale(image);
+        imgs.add(image);   
         
-        imgs.add(ProcessImage.convertImageToGrayScale(JAI.create("fileload", path)));
+        setThumbImages(thumbs);
+
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.showOpenDialog(this);
-        
+
         String path = chooser.getSelectedFile().getAbsolutePath();
-        
+
         original = JAI.create("fileload", path);
-        original = ProcessImage.convertImageToGrayScale(original);
         principal.setImage(original);
+        original = ProcessImage.convertImageToGrayScale(original);
+        
+        imagens = ProcessImage.splitImageIntoGrid(original, 10);
     }//GEN-LAST:event_openButtonActionPerformed
 
     private void compareButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compareButtonActionPerformed
         BioProcess bio = new BioProcess();
-        bio.startBioProcess(original, imgs, 400, 100, 100,(original.getWidth()*original.getHeight())/2,0.9);
+        bio.startBioProcess(original, imgs, 100, 50, 50, (original.getWidth() * original.getHeight()) / 2, 0.70, false);
+        
+        showSimilarityOrder(bio.getOrderedVector());
+        
     }//GEN-LAST:event_compareButtonActionPerformed
 
     /**
@@ -187,5 +385,92 @@ public class PainelPrincipal extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton openButton;
     private javax.swing.JPanel painelDeImagem;
+    private javax.swing.JPanel thumbPanel1;
+    private javax.swing.JPanel thumbPanel2;
+    private javax.swing.JPanel thumbPanel3;
+    private javax.swing.JPanel thumbPanel4;
+    private javax.swing.JPanel thumbPanel5;
+    private javax.swing.JPanel thumbPanel6;
+    private javax.swing.JPanel thumbPanel7;
+    private javax.swing.JPanel thumbPanel8;
     // End of variables declaration//GEN-END:variables
+
+    private void setThumbImages(ArrayList<PlanarImage> imgs) {
+        for (int i = 0; i < imgs.size(); i++) {
+            if (i == 0) {
+                panelThumb1.setImage(imgs.get(0));
+            }
+            if (i == 1) {
+                panelThumb2.setImage(imgs.get(1));
+            }
+            if (i == 2) {
+                panelThumb3.setImage(imgs.get(2));
+            }
+            if (i == 3) {
+                panelThumb4.setImage(imgs.get(3));
+            }
+            if (i == 4) {
+                panelThumb5.setImage(imgs.get(4));
+            }
+            if (i == 5) {
+                panelThumb6.setImage(imgs.get(5));
+            }
+            if (i == 6) {
+                panelThumb7.setImage(imgs.get(6));
+            }
+            if (i == 7) {
+                panelThumb8.setImage(imgs.get(7));
+            }
+        }
+    }
+
+    private BufferedImage iconify(PlanarImage image, int width, int height) {
+        float scale;
+
+        float s1 = (float) width / (float) image.getWidth();
+        float s2 = (float) height / (float) image.getHeight();
+
+        if (s1 > s2) {
+            scale = s1;
+        } else {
+            scale = s2;
+        }
+
+        InterpolationBilinear interp = new InterpolationBilinear();
+
+        Float scalef = new Float(scale);
+        Float zerof = new Float(0.0F);
+        PlanarImage temp = (PlanarImage) ScaleDescriptor.create(image,
+                scalef,
+                scalef,
+                zerof,
+                zerof,
+                interp,
+                null);
+
+        return temp.getAsBufferedImage();
+    }
+
+    private void showSimilarityOrder(int[] orderedVector) {
+        
+        panelThumb1.setSimilarityLabel(orderedVector[0]);
+        panelThumb2.setSimilarityLabel(orderedVector[1]);
+        panelThumb3.setSimilarityLabel(orderedVector[2]);
+        panelThumb4.setSimilarityLabel(orderedVector[3]);
+        panelThumb5.setSimilarityLabel(orderedVector[4]);
+        panelThumb6.setSimilarityLabel(orderedVector[5]);
+        panelThumb7.setSimilarityLabel(orderedVector[6]);
+        panelThumb8.setSimilarityLabel(orderedVector[7]);
+        
+        panelThumb1.repaint();
+        panelThumb2.repaint();
+        panelThumb3.repaint();
+        panelThumb4.repaint();
+        panelThumb5.repaint();
+        panelThumb6.repaint();
+        panelThumb7.repaint();
+        panelThumb8.repaint();
+        
+    }
+
 }

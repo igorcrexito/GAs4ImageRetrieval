@@ -5,16 +5,12 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.awt.image.renderable.ParameterBlock;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.media.jai.BorderExtender;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -29,6 +25,7 @@ import javax.swing.JPanel;
 public class DisplayPrincipal extends JPanel {
 
     private PlanarImage image;
+    private int similarityLabel;
    
     public DisplayPrincipal(PlanarImage image) {
         super();
@@ -52,13 +49,20 @@ public class DisplayPrincipal extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.red);
         if (image!=null)
             g.drawImage(image.getAsBufferedImage(), 0, 0, getWidth(), getHeight(), this);
+        
+        g2.setFont(new Font("Times new Roman", Font.BOLD, 20));
+        if (similarityLabel!=0) {
+            g2.drawString(String.valueOf(similarityLabel),20,20);
+        }
         
         g.setColor(Color.red);
     }
 
-    private static RenderedOp scale(RenderedOp image, float scaleH, float scaleV) {
+    public static BufferedImage scale(RenderedOp image, float scaleH, float scaleV) {
         ParameterBlock scaleParams = new ParameterBlock();
         scaleParams.addSource(image);
         scaleParams.add(scaleH).add(scaleV).add(0.0f).add(0.0f);
@@ -72,8 +76,17 @@ public class DisplayPrincipal extends JPanel {
         scalingHints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         scalingHints.put(JAI.KEY_BORDER_EXTENDER, BorderExtender.createInstance(BorderExtender.BORDER_COPY));
 
-        return JAI.create("scale", scaleParams, scalingHints);
+        return JAI.create("scale", scaleParams, scalingHints).getAsBufferedImage();
  }
 
+    public int getSimilarityLabel() {
+        return similarityLabel;
+    }
+
+    public void setSimilarityLabel(int similarityLabel) {
+        this.similarityLabel = similarityLabel;
+    }
+
+    
     
 }

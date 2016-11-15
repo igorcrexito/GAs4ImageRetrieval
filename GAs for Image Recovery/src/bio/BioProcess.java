@@ -19,24 +19,38 @@ import utils.BioOps;
  */
 public class BioProcess {
 
-    public void startBioProcess(PlanarImage baseImage, ArrayList<PlanarImage> imgs, int populationSize, int mutationLevel, int reproductionLevel, int crossoverCut , double fitnessThreshold) {
+    private int[] orderedVector;
+    
+    public void startBioProcess(PlanarImage baseImage, ArrayList<PlanarImage> imgs, int populationSize, int mutationLevel, int reproductionLevel, int crossoverCut , double fitnessThreshold, boolean SSD) {
 
+        //inicia o vetor que representa os índices das imagens ordenadas
+        orderedVector = new int[imgs.size()];
+        
         Chromossome baseChromo = BioOps.convertImage2Chromossome(baseImage);
         ArrayList<Chromossome> population;
         int width = baseImage.getWidth();
         int height = baseImage.getHeight();
  
         int iterations = 0;
-        Random rand = new Random();
         //para cada imagem da galeria
         for (int z = 0; z < imgs.size(); z++) {
-            //inicializo uma população de tamanho 50
+            //inicializo uma população de tamanho 50 para cada indivíduo
+            Random rand = new Random();
             population = BioOps.startPopulation(baseChromo, imgs.get(z), populationSize);
             
             //computo o fitness do melhor indivíduo da população
-            double fitness = BioOps.computeFitnessValue(baseChromo, BioOps.getBestIndividual(population));
-            System.out.println("fitness value: "+ fitness);
+            double fitness;
+            if (!SSD)
+                fitness = BioOps.computeFitnessValue(baseChromo, BioOps.getBestIndividual(population));
+            else
+                fitness = BioOps.computeFitnessValueSSD(baseChromo, BioOps.getBestIndividual(population));
+            
+            //zero as iterações pra começar pra cada imagem
+            iterations = 1;
+            System.out.println("initial fitness value: "+ fitness);
             while (fitness <= fitnessThreshold) {
+                
+                //99210-7521
                 
                 for (int i=0;i<reproductionLevel;i++) {
                        Chromossome[] chromos = BioOps.performCrossover(population.get(rand.nextInt(populationSize-1)), population.get(rand.nextInt(populationSize-1)), width*height);
@@ -56,10 +70,16 @@ public class BioProcess {
                 System.out.println("fitness value: "+ fitness);
             }
             
+            orderedVector[z] = iterations;
         }
         
+       
         System.out.println("número de iterações é: "+iterations);
 
     }
 
+    public int[] getOrderedVector() {
+        return orderedVector;
+    }
+    
 }
